@@ -1,0 +1,11 @@
+{
+    "clang-tidy.executable": "clang-tidy -I include",
+    "editor.formatOnSave": true,
+    "c-cpp-flylint.flexelint.enable": false,
+    "c-cpp-flylint.language": "c",
+    "c-cpp-flylint.ignoreParseErrors": true,
+    "c-cpp-flylint.flawfinder.enable": false,
+    "c-cpp-flylint.cppcheck.extraArgs": [
+        " --check-level=exhaustive"
+    ]
+}

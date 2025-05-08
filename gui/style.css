@@ -1,0 +1,57 @@
+.button {
+    background-image: none;
+    text-shadow: 1px 1px 1px #000;
+    font-weight: 700;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+
+.present {
+    background-color: #facc15;
+}
+.correct {
+    background-color: #4ade80;
+}
+
+/* TODO: use vars to reduce redundancy */
+.invalid:light {
+    background-color: #dd215a;
+    /* background-color: error_color; */
+}
+.wrong:light {
+    background-color: #94a3b8;
+}
+.q_present:light {
+	background-image: linear-gradient(90deg, #94a3b8 50%, #facc15 50%);
+}
+.q_correct:light {
+	background-image: linear-gradient(90deg, #94a3b8 50%, #4ade80 50%);
+}
+
+
+.invalid {
+    background-color: #770a2b;
+}
+.wrong {
+    background-color: #334155;
+}
+.q_present {
+	background-image: linear-gradient(90deg, #334155 50%, #facc15 50%);
+}
+.q_correct {
+	background-image: linear-gradient(90deg, #334155 50%, #4ade80 50%);
+}
+
+
+.setting_vbox {
+    padding:5px;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 900;
+}
+
+.file_label {
+    padding-left: 5px;
+}

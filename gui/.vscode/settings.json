@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.impala": "rust",
+        "wordle.h": "c",
+        "common.h": "c"
+    }
+}
