@@ -7,5 +7,22 @@
     "c-cpp-flylint.flawfinder.enable": false,
     "c-cpp-flylint.cppcheck.extraArgs": [
         " --check-level=exhaustive"
-    ]
+    ],
+    "files.associations": {
+        "array": "c",
+        "deque": "c",
+        "string": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "string_view": "c",
+        "format": "c",
+        "initializer_list": "c",
+        "span": "c",
+        "text_encoding": "c",
+        "stdbool.h": "c",
+        "dict.h": "c",
+        "random": "c",
+        "algorithm": "c",
+        "functional": "c"
+    }
 }
