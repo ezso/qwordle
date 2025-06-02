@@ -24,19 +24,15 @@ bool is_empty(const Trie *dict) {
     return true;
 }
 
-void cutout(Trie *dict, const bool *used_letters) {
-    if (dict != NULL) {
-        for (int i = 0; i < ALPHABET_SIZE; i++) {
-            // clean first child nodes
-            if (used_letters[i] == true && dict->edges[i] != NULL) {
-                destroy(dict->edges[i]);
-                dict->edges[i] = NULL;
-            } else {
-                cutout(dict->edges[i], used_letters);
-            }
-        }
-    }
-}
+// bool next_letter(Trie *dict, const bool *used_letters) {
+//     for (size_t i = 0; i < ALPHABET_SIZE; i++) {
+//         if (used_letters[i] == false && dict->edges[i] != NULL) {
+//             return true;
+//         }
+//     }
+
+//     return false;
+// }
 
 bool is_a_word_left(const Trie *dict) {
     if (dict == NULL) {
@@ -52,6 +48,24 @@ bool is_a_word_left(const Trie *dict) {
         }
     }
     return false;
+}
+
+void cutoff(Trie *dict, const bool *used_letters) {
+    if (dict != NULL) {
+        for (int i = 0; i < ALPHABET_SIZE; i++) {
+            // first clean child nodes
+            if (used_letters[i] == true && dict->edges[i] != NULL) {
+                destroy(dict->edges[i]);
+                dict->edges[i] = NULL;
+            } else if (dict->edges[i] != NULL) {
+                cutoff(dict->edges[i], used_letters);
+                if (!is_a_word_left(dict->edges[i])) {
+                    destroy(dict->edges[i]);
+                    dict->edges[i] = NULL;
+                }
+            }
+        }
+    }
 }
 
 void select_a_word(Trie *dict, char *selected) {
@@ -175,7 +189,7 @@ Trie *generateDict(char *filename, int k, /*@out@*/ char *selected1, /*@out@*/ c
         }
         if (selected2 != NULL) {
             Trie *dict2 = clone(dict);
-            cutout(dict2, used_letters);
+            cutoff(dict2, used_letters);
 
             if (is_a_word_left(dict2)) {
                 got_both = true;
