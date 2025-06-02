@@ -11,89 +11,6 @@
 #define ALPHABET_SIZE 26
 #define MAX_ATTEMPTS 100
 
-bool is_empty(const Trie *dict) {
-    if (dict == NULL) {
-        return true;
-    }
-
-    for (size_t i = 0; i < ALPHABET_SIZE; i++) {
-        if (dict->edges[i] != NULL) {
-            return false;
-        }
-    }
-    return true;
-}
-
-void cutout(Trie *dict, const bool *used_letters) {
-    if (dict != NULL) {
-        for (int i = 0; i < ALPHABET_SIZE; i++) {
-            // clean first child nodes
-            if (used_letters[i] == true && dict->edges[i] != NULL) {
-                destroy(dict->edges[i]);
-                dict->edges[i] = NULL;
-            } else {
-                cutout(dict->edges[i], used_letters);
-            }
-        }
-    }
-}
-
-bool is_a_word_left(const Trie *dict) {
-    if (dict == NULL) {
-        return false;
-    }
-    if (dict->end == true) {
-        return true;
-    }
-
-    for (size_t i = 0; i < ALPHABET_SIZE; i++) {
-        if (dict->edges[i] != NULL) {
-            return is_a_word_left(dict->edges[i]);
-        }
-    }
-    return false;
-}
-
-void select_a_word(Trie *dict, char *selected) {
-    // choose a word letter by letter from the trie
-    printf("Selecting a word\n");
-    Trie *node = dict;
-    int idx = 0;
-
-    do {
-        // check if there are edges available
-        int edges = 0;
-        for (size_t i = 0; i < ALPHABET_SIZE; i++) {
-            if (node->edges[i] != NULL) {
-                edges++;
-            }
-        }
-        if (edges == 0) {
-            printf("Got stuck!\n");
-            node = dict;
-            continue;
-        }
-
-        // randomly choose one of the available edges
-        int rand_edge = (int)(drand48() * (double)edges);
-        // get the letter appropriate to the random edge
-        edges = 0;
-        for (size_t i = 0; i < ALPHABET_SIZE; i++) {
-            if (node->edges[i] != NULL) {
-                if (rand_edge == edges) {
-                    selected[idx++] = 'a' + i;
-                    printf("Letter %c\n", selected[idx - 1]);
-                    node = node->edges[i];
-                    break;
-                }
-                edges++;
-            }
-        }
-    } while (!node->end);  // repeat until the end of the word reached
-    // set the end of word in the memory
-    selected[idx] = '\0';
-}
-
 bool check_valid_letters(const char *str) {
     int i = 0;
     while (str[i] != '\0') {
@@ -131,29 +48,6 @@ Trie *createDict(const char *filename, int k) {
     return dict;
 }
 
-Trie *clone(const Trie *src) {
-    if (src == NULL) {
-        return NULL;
-    }
-
-    Trie *copy = create();
-    if (copy == NULL) {
-        return NULL;  // allocation failed
-    }
-
-    copy->end = src->end;
-
-    for (int i = 0; i < ALPHABET_SIZE; i++) {
-        if (src->edges[i] != NULL) {
-            copy->edges[i] = clone(src->edges[i]);  // recursive clone
-        } else {
-            copy->edges[i] = NULL;
-        }
-    }
-
-    return copy;
-}
-
 Trie *generateDict(char *filename, int k, /*@out@*/ char *selected1, /*@out@*/ char *selected2) {
     // read the file
     printf("initializing the trie\n");
@@ -175,11 +69,13 @@ Trie *generateDict(char *filename, int k, /*@out@*/ char *selected1, /*@out@*/ c
         }
         if (selected2 != NULL) {
             Trie *dict2 = clone(dict);
-            cutout(dict2, used_letters);
+            cutoff(dict2, used_letters);
 
             if (is_a_word_left(dict2)) {
                 got_both = true;
                 select_a_word(dict2, selected2);
+            } else {
+                printf("No words left\n");
             }
 
             if (dict2 != NULL) {

@@ -2,12 +2,14 @@
 
 #include <stdbool.h>
 
-typedef struct Trie {
-    bool end;                // is this a word-end
-    struct Trie *edges[26];  // edges are the letters of the English alphabet a-z
-} Trie;
+typedef struct Trie Trie;
 
 Trie *create();
 void insert(Trie *dict, char *str);
 bool lookup(Trie *dict, char *str);
 void destroy(Trie *dict);
+bool is_empty(const Trie *dict);
+bool is_a_word_left(const Trie *dict);
+Trie *clone(const Trie *src);
+void cutoff(Trie *dict, const bool *used_letters);
+void select_a_word(Trie *dict, char *selected);
